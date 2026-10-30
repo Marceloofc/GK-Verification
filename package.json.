@@ -1,0 +1,12 @@
+{
+  "name": "gk-verification",
+  "version": "1.0.0",
+  "description": "Bot oficial de verificacao do Exercito Brasileiro GK",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.19.3"
+  }
+}
