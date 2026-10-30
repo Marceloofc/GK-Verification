@@ -1,4 +1,3 @@
-
 function hexToBytes(hex, expectedLength) {
   if (
     typeof hex !== "string" ||
