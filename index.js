@@ -1,14 +1,24 @@
-const { Client, GatewayIntentBits } = require('discord.js');
+export default {
+  async fetch(request, env) {
+    if (request.method === "GET") {
+      return new Response("GK Verification está online! 🇧🇷");
+    }
 
-const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMembers
-    ]
-});
+    if (request.method === "POST") {
+      return new Response(
+        JSON.stringify({
+          type: 1
+        }),
+        {
+          headers: {
+            "Content-Type": "application/json"
+          }
+        }
+      );
+    }
 
-client.once('ready', () => {
-    console.log(`GK Verification conectado como ${client.user.tag}!`);
-});
-
-client.login(process.env.DISCORD_TOKEN);
+    return new Response("Método não permitido", {
+      status: 405
+    });
+  }
+};
