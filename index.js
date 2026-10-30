@@ -1,12 +1,16 @@
 
-function hexToBytes(hex) {
-  if (!/^[0-9a-f]{128}$/i.test(hex)) {
-    throw new Error("Chave ou assinatura inválida");
+function hexToBytes(hex, expectedLength) {
+  if (
+    typeof hex !== "string" ||
+    hex.length !== expectedLength * 2 ||
+    !/^[0-9a-f]+$/i.test(hex)
+  ) {
+    throw new Error("Formato hexadecimal inválido");
   }
 
-  const bytes = new Uint8Array(hex.length / 2);
+  const bytes = new Uint8Array(expectedLength);
 
-  for (let i = 0; i < bytes.length; i++) {
+  for (let i = 0; i < expectedLength; i++) {
     bytes[i] = parseInt(hex.substring(i * 2, i * 2 + 2), 16);
   }
 
@@ -33,7 +37,7 @@ export default {
 
       const key = await crypto.subtle.importKey(
         "raw",
-        hexToBytes(env.DISCORD_PUBLIC_KEY),
+        hexToBytes(env.DISCORD_PUBLIC_KEY, 32),
         { name: "Ed25519" },
         false,
         ["verify"]
@@ -44,7 +48,7 @@ export default {
       const valid = await crypto.subtle.verify(
         { name: "Ed25519" },
         key,
-        hexToBytes(signature),
+        hexToBytes(signature, 64),
         new TextEncoder().encode(timestamp + body)
       );
 
